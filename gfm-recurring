@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#compiles project if not compiled
+if [ ! -d "out" ]; then
+    echo "Compilando..."
+    make compile
+fi
+
+#executes the program
+if [ "$1" ]; then
+    java -cp out src.GMFRecurring "$1"
+else
+    java -cp out src.GMFRecurring
+fi
+
