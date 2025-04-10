@@ -1,4 +1,7 @@
 package src;
+import src.model.Campaign;
+import src.model.Donor;
+
 import java.util.*;
 
 public class DonorCampaignManager {
