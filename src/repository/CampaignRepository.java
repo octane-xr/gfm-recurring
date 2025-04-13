@@ -11,6 +11,19 @@ public class CampaignRepository implements CampaignRepositoryInterface {
 
     public CampaignRepository(String file_path) {
         this.file_path = file_path;
+        ensureFileExists();
+    }
+
+    private void ensureFileExists() {
+        File file = new File(file_path);
+        if(!file.exists()) {
+            try{
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException("Error creating campaign file: " + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -25,7 +38,7 @@ public class CampaignRepository implements CampaignRepositoryInterface {
                 campaigns.add(c);
             }
         }catch (IOException e) {
-            System.out.println("No campaign file found, creating new one...");
+            System.err.println("Failed to read campaign file: " + e.getMessage());
         }
         return campaigns;
     }

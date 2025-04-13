@@ -1,20 +1,21 @@
+TARGET = gfm-recurring
+
 SRC_DIR = src
-OUT_DIR = out
+BIN_DIR = bin
 
-SOURCES = $(wildcard $(SRC_DIR)/*.java)
-CLASSES = $(SOURCES:$(SRC_DIR)/%.java=$(OUT_DIR)/%.class)
+SOURCES := $(shell find $(SRC_DIR) -name "*.java")
+JAVAC = javac
 
-MAIN_CLASS = src.GMFRecurring
+MAIN_CLASS = main.Application
 
-# Compilación
-compile:
-	mkdir -p $(OUT_DIR)
-	javac -d $(OUT_DIR) $(SOURCES)
+.PHONY: all run clean
 
-run: compile
-	java -cp $(OUT_DIR) $(MAIN_CLASS)
+all:
+	@mkdir -p $(BIN_DIR)
+	$(JAVAC) -d $(BIN_DIR) $(SOURCES)
+
+run: all
+	java -cp $(BIN_DIR) $(MAIN_CLASS) input.txt
 
 clean:
-	rm -rf $(OUT_DIR)
-
-
+	rm -rf $(BIN_DIR)

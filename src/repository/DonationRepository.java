@@ -11,6 +11,19 @@ public class DonationRepository implements DonationRepositoryInterface {
 
     public DonationRepository(String file_path) {
         this.file_path = file_path;
+        ensureFileExists();
+    }
+
+    private void ensureFileExists() {
+        File file = new File(file_path);
+        if(!file.exists()) {
+            try{
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException("Error creating donation file: " + e.getMessage());
+            }
+        }
     }
 
     @Override

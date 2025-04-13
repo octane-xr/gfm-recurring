@@ -28,7 +28,9 @@ public class CampaignService {
         return campaigns.get(name);
     }
 
-    public void getAllCampaigns(){
+    public Collection<Campaign> getAllCampaigns(){return campaigns.values();}
+
+    public void saveAllCampaigns(){
         campaignRepo.saveAllCampaigns(new ArrayList<>(campaigns.values()));
     }
 }

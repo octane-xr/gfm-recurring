@@ -1,49 +1,36 @@
-package src;
-import src.model.Campaign;
+package src.service;
+
+import src.interfaces.DonationRepositoryInterface;
+import src.model.Donation;
 import src.model.Donor;
+import src.model.Campaign;
 
 import java.util.*;
 
-public class DonorCampaignManager {
-    Map<String, Donor> donors = new HashMap<>();
-    Map<String, Campaign> campaigns = new HashMap<>();
+public class DonationService {
+    private final DonationRepositoryInterface donationRepo;
+    private final DonorService donorService;
+    private final CampaignService campaignService;
 
-    public void createDonor(String name, int monthly_limit){
-        Donor donor = new Donor(name,monthly_limit);
-        donors.put(name, donor);
+    public DonationService(DonationRepositoryInterface donationRepo, DonorService donorService, CampaignService campaignService) {
+        this.donationRepo = donationRepo;
+        this.donorService = donorService;
+        this.campaignService = campaignService;
     }
 
-    public void createCampaign(String name){
-        Campaign campaign = new Campaign(name);
-        campaigns.put(name, campaign);
-    }
+    public boolean makeDonation(String donorName, String campaignName, int amount) {
+        Donor donor = donorService.get(donorName);
+        Campaign campaign = campaignService.get(campaignName);
 
-    public void makeDonation(String donor_name, String campaign_name, int amount){
-        Donor donor = donors.get(donor_name);
-        Campaign campaign = campaigns.get(campaign_name);
-        if(donor != null && campaign != null){
-            if(donor.makeDonation(amount)){
-                campaign.addDonation(amount);
-            }
+        if(donor==null || campaign==null || !donor.canDonate(amount)) {
+            return false;
         }
 
+        donor.addDonation(amount);
+        campaign.add_donation(amount);
+        Donation donation = new Donation(donorName, campaignName, amount);
+        donationRepo.saveDonation(donation);
+        return true;
     }
 
-    public void printSummary(){
-        List<Donor> donors_list = new ArrayList<>(donors.values());
-        List<Campaign> campaigns_list = new ArrayList<>(campaigns.values());
-
-        donors_list.sort(Comparator.comparing(Donor::getName));
-        campaigns_list.sort(Comparator.comparing(Campaign:: getName));
-        System.out.println("\nDonors: ");
-        for(Donor d : donors_list){
-            System.out.println(d.name + ": Total: $" + d.totalDonated() + " Average: $" + d.averageDonation());
-        }
-
-        System.out.println("\nCampaigns: ");
-
-        for(Campaign c : campaigns_list){
-            System.out.println(c.name + ": Total: $" + c.getTotalRaised());
-        }
-    }
 }

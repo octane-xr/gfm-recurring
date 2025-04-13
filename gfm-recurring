@@ -2,14 +2,14 @@
 
 #compiles project if not compiled
 if [ ! -d "out" ]; then
-    echo "Compilando..."
-    make compile
+    echo "Compiling..."
+    javac -d out src/**/*.java
 fi
 
 #executes the program
 if [ "$1" ]; then
-    java -cp out src.GMFRecurring "$1"
+    java -cp out src.main.Application "$1"
 else
-    java -cp out src.GMFRecurring
+    java -cp out src.main.Application
 fi
 
