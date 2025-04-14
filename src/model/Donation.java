@@ -1,26 +1,38 @@
 package model;
 
+/**
+ * Represents a donation made by a donor to a campaign.
+ */
 public class Donation {
-    private final String donor_name;
-    private final String campaign_name;
-    private final int amount_donated;
+    private final String donorName;
+    private final String campaignName;
+    private final int amountDonated;
 
-    public Donation(String donor_name, String campaign_name, int amount_donated) {
-        this.donor_name = donor_name;
-        this.campaign_name = campaign_name;
-        this.amount_donated = amount_donated;
+    /**
+     * Constructs a new Donation with the given donor, campaign, and amount.
+     *
+     * @param donorName     the name of the donor
+     * @param campaignName  the name of the campaign
+     * @param amountDonated the amount donated
+     */
+    public Donation(final String donorName,
+                    final String campaignName,
+                    final int amountDonated) {
+        this.donorName = donorName;
+        this.campaignName = campaignName;
+        this.amountDonated = amountDonated;
     }
 
-    public String getDonor_name() {
-        return donor_name;
+    public String getDonorName() {
+        return donorName;
     }
 
-    public String getCampaign_name() {
-        return campaign_name;
+    public String getCampaignName() {
+        return campaignName;
     }
 
-    public int getAmount_donated() {
-        return amount_donated;
+    public int getAmountDonated() {
+        return amountDonated;
     }
 
 }

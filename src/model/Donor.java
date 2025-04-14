@@ -1,46 +1,73 @@
 package model;
 
-
+/**
+ * Represents a donor who can contribute to campaigns with a specified monthly limit.
+ */
 public class Donor {
-    private String name;
-    private int monthly_limit;
-    private int total_donated;
-    private int donation_count;
+    private final String name;
+    private int monthlyLimit;
+    private int totalDonated;
+    private int donationCount;
 
-
-    public Donor(String name, int monthly_limit) {
+    /**
+     * Constructs a new Donor with the
+     * specified name and monthly limit.
+     *
+     * @param name         the name of the donor
+     * @param monthlyLimit the monthly donation limit
+     */
+    public Donor(final String name, final int monthlyLimit) {
         this.name = name;
-        this.monthly_limit = monthly_limit;
-        this.total_donated = 0;
-        this.donation_count = 0;
+        this.monthlyLimit = monthlyLimit;
+        this.totalDonated = 0;
+        this.donationCount = 0;
     }
 
-    public boolean canDonate(int amount){
-        return total_donated + amount <= monthly_limit;
+    /**
+     * Checks if the donor can donate a specific
+     * amount without exceeding the monthly limit.
+     *
+     * @param amount the amount to check
+     * @return true if the donation is allowed, false otherwise
+     */
+    public boolean canDonate(final int amount) {
+        return totalDonated + amount <= monthlyLimit;
     }
 
-    public void addDonation(int amount){
-        total_donated += amount;
-        donation_count++;
+    /**
+     * Registers a new donation, updating
+     * total donated and donation count.
+     *
+     * @param amount the amount donated
+     */
+    public void addDonation(final int amount) {
+        totalDonated += amount;
+        donationCount++;
     }
 
-    public int getAverageDonation(){
-        return donation_count == 0 ? 0 : total_donated /donation_count;
+    /**
+     * Calculates and returns the average donation amount.
+     *
+     * @return the average donation amount,
+     * or 0 if no donations have been made
+     */
+    public int getAverageDonation() {
+        return donationCount == 0 ? 0 : totalDonated / donationCount;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getMonthly_limit() {
-        return monthly_limit;
+    public int getMonthlyLimit() {
+        return monthlyLimit;
     }
 
-    public int getTotal_donated() {
-        return total_donated;
+    public int getTotalDonated() {
+        return totalDonated;
     }
 
-    public int getDonation_count() {
-        return donation_count;
+    public int getDonationCount() {
+        return donationCount;
     }
 }

@@ -4,47 +4,81 @@ import model.Donation;
 import interfaces.DonationRepositoryInterface;
 import util.CsvUtil;
 
-import java.util.*;
-import java.io.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
-public class DonationRepository implements DonationRepositoryInterface {
-    private final String file_path;
-    private final CsvUtil csv_util;
+/**
+ * Repository for managing
+ * Donation data using a CSV file.
+ */
+public final class DonationRepository implements DonationRepositoryInterface {
+    private final String filePath;
+    private final CsvUtil csvUtil;
 
-    public DonationRepository(String file_path) throws IOException {
-        this.file_path = file_path;
-        csv_util = new CsvUtil();
-        csv_util.ensureFileExists(file_path);
+    /**
+     * Constructs a new DonationRepository
+     * with the given file path.
+     * Ensures that the file exists.
+     *
+     * @param filePath the path to the CSV file
+     * @throws IOException if an I/O error occurs
+     */
+    public DonationRepository(final String filePath) throws IOException {
+        this.filePath = filePath;
+        csvUtil = new CsvUtil();
+        csvUtil.ensureFileExists(filePath);
     }
 
+    /**
+     * Loads all donations from the CSV file.
+     *
+     * @return a list of donations loaded from the file
+     */
     @Override
     public List<Donation> loadAllDonations() {
         List<Donation> donations = new ArrayList<>();
-        try(Scanner sc = new Scanner(new File(file_path))){
-            while(sc.hasNextLine()){
+        try (Scanner sc = new Scanner(new File(filePath))) {
+            while (sc.hasNextLine()) {
                 String[] parts = sc.nextLine().split(",");
-                if(parts.length <2) continue;
-                Donation d = new Donation(parts[0],parts[1],Integer.parseInt(parts[2]));
+                if (parts.length < 2) {
+                    continue;
+                }
+                Donation d = new Donation(
+                        parts[0], parts[1], Integer.parseInt(parts[2]));
                 donations.add(d);
             }
-
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("No donations file found, creating new one...");
         }
         return donations;
     }
 
+    /**
+     * Saves a single donation entry by appending it to the CSV file.
+     *
+     * @param donation the donation to save
+     */
     @Override
-    public void saveDonation(Donation donation) {
+    public void saveDonation(final Donation donation) {
+        try (FileWriter fw = new FileWriter(filePath, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter pw = new PrintWriter(bw)) {
+            pw.println(donation.getDonorName()
+                    + ","
+                    + donation.getCampaignName()
+                    + ","
+                    + donation.getAmountDonated());
 
-       try(FileWriter fw = new FileWriter(file_path,true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw)){
-           pw.println(donation.getDonor_name() + ","+donation.getCampaign_name()+","+donation.getAmount_donated());
-
-       }catch (IOException e) {
-           throw new RuntimeException("Failed to save donation. Error: " + e.getMessage());
-       }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save donation. Error: "
+                    + e.getMessage());
+        }
 
     }
 }

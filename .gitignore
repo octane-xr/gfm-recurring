@@ -1,0 +1,13 @@
+# Intellij IDEA
+.idea/
+*.iml
+
+# Build output
+out/
+
+# Project-specific data
+data/
+
+# OS-specific files
+.DS_Store
+Thumbs.db

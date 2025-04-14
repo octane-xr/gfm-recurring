@@ -1,24 +1,37 @@
 package model;
 
+/**
+ * Represents a fundraising campaign that tracks the total amount raised.
+ */
 public class Campaign {
     private String name;
-    private int total_raised;
+    private int totalRaised;
 
-    public Campaign(String name) {
+    /**
+     * Constructs a new Campaign with the given name
+     * and initializes totalRaised to 0.
+     *
+     * @param name the name of the campaign
+     */
+    public Campaign(final String name) {
         this.name = name;
-        this.total_raised = 0;
+        this.totalRaised = 0;
     }
 
-    public void add_donation(int amount){
-        total_raised += amount;
+    /**
+     * Adds a donation amount to the campaign's total raised value.
+     *
+     * @param amount the amount to add
+     */
+    public void addDonation(final int amount) {
+        totalRaised += amount;
     }
-
 
     public String getName() {
         return name;
     }
 
-    public int getTotal_raised() {
-        return total_raised;
+    public int getTotalRaised() {
+        return totalRaised;
     }
 }
