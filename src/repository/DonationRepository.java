@@ -2,28 +2,19 @@ package repository;
 
 import model.Donation;
 import interfaces.DonationRepositoryInterface;
+import util.CsvUtil;
 
 import java.util.*;
 import java.io.*;
 
 public class DonationRepository implements DonationRepositoryInterface {
     private final String file_path;
+    private final CsvUtil csv_util;
 
-    public DonationRepository(String file_path) {
+    public DonationRepository(String file_path) throws IOException {
         this.file_path = file_path;
-        ensureFileExists();
-    }
-
-    private void ensureFileExists() {
-        File file = new File(file_path);
-        if(!file.exists()) {
-            try{
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException("Error creating donation file: " + e.getMessage());
-            }
-        }
+        csv_util = new CsvUtil();
+        csv_util.ensureFileExists(file_path);
     }
 
     @Override

@@ -2,29 +2,22 @@ package repository;
 
 import model.Campaign;
 import interfaces.CampaignRepositoryInterface;
+import util.CsvUtil;
 
 import java.io.*;
 import java.util.*;
 
 public class CampaignRepository implements CampaignRepositoryInterface {
     private final String file_path;
+    private final CsvUtil csv_util;
 
-    public CampaignRepository(String file_path) {
+    public CampaignRepository(String file_path) throws IOException {
         this.file_path = file_path;
-        ensureFileExists();
+        csv_util = new CsvUtil();
+        csv_util.ensureFileExists(file_path);
     }
 
-    private void ensureFileExists() {
-        File file = new File(file_path);
-        if(!file.exists()) {
-            try{
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException("Error creating campaign file: " + e.getMessage());
-            }
-        }
-    }
+
 
     @Override
     public List<Campaign> loadAllCampaigns() {

@@ -2,30 +2,22 @@ package repository;
 
 import interfaces.DonorRepositoryInterface;
 import model.Donor;
+import util.CsvUtil;
 
 import java.io.*;
 import java.util.*;
 
 public class DonorRepository implements DonorRepositoryInterface {
     private final String file_path;
+    private final CsvUtil csv_util;
 
-    public DonorRepository(String file_path) {
+    public DonorRepository(String file_path) throws IOException {
         this.file_path = file_path;
-        ensureFileExists();
+        csv_util = new CsvUtil();
+        csv_util.ensureFileExists(file_path);
     }
 
-    private void ensureFileExists() {
-        File file = new File(file_path);
-        if(!file.exists()) {
-            try{
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException("Error creating donor file: " + e.getMessage());
-            }
-        }
-    }
-
+    
     @Override
     public List<Donor> loadAllDonors() {
         List<Donor> donors = new ArrayList<>();
