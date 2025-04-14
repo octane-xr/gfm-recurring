@@ -7,7 +7,10 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class DonationRepositoryTests {
+public final class DonationRepositoryTests {
+    private DonationRepositoryTests() {
+        //private constructor
+    }
 
     public static void runAll() {
         System.out.println("DonationRepositoryTests:");
@@ -29,7 +32,7 @@ public class DonationRepositoryTests {
             return new ArrayList<>(history);
         }
 
-        public void saveDonation(Donation donation) {
+        public void saveDonation(final Donation donation) {
             history.add(donation);
         }
     }

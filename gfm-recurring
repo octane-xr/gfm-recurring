@@ -1,15 +1,19 @@
 #!/bin/bash
 
-#compiles project if not compiled
-if [ ! -d "out" ]; then
+SRC_DIR="src"
+BIN_DIR="bin"
+MAIN_CLASS="main.Application"
+
+if [ ! -d "$BIN_DIR" ] || [ -z "$(find "$BIN_DIR" -name '*.class' 2>/dev/null)" ]; then
     echo "Compiling..."
-    javac -d out src/**/*.java
+    mkdir -p "$BIN_DIR"
+    find "$SRC_DIR" -name "*.java" | xargs javac -d "$BIN_DIR"
 fi
 
-#executes the program
 if [ "$1" ]; then
-    java -cp out src.main.Application "$1"
+    java -cp "$BIN_DIR" "$MAIN_CLASS" "$1"
 else
-    java -cp out src.main.Application
+    java -cp "$BIN_DIR" "$MAIN_CLASS"
 fi
+
 

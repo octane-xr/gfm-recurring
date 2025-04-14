@@ -8,7 +8,10 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class DonationServiceTests {
+public final class DonationServiceTests {
+    private DonationServiceTests() {
+        //private constructor
+    }
 
     public static void runAll() {
         System.out.println("DonationServiceTests:");
@@ -25,12 +28,22 @@ public class DonationServiceTests {
         campaigns.addCampaign("Dogs");
 
         DonationService service = new DonationService(repo, donors, campaigns);
-        boolean result = service.makeDonation("Greg", "Dogs", 200);
+        boolean result = service.makeDonation("Greg",
+                "Dogs",
+                200);
 
-        assertEquals(true, result, "Donation accepted");
-        assertEquals(200, donors.get("Greg").getTotalDonated(), "Donation amount updated");
-        assertEquals(200, campaigns.get("Dogs").getTotalRaised(), "Campaign updated");
-        assertEquals(1, repo.getHistory().size(), "Donation recorded");
+        assertEquals(true,
+                result,
+                "Donation accepted");
+        assertEquals(200,
+                donors.get("Greg").getTotalDonated(),
+                "Donation amount updated");
+        assertEquals(200,
+                campaigns.get("Dogs").getTotalRaised(),
+                "Campaign updated");
+        assertEquals(1,
+                repo.getHistory().size(),
+                "Donation recorded");
     }
 
     public static void testDonationOverLimit() {
@@ -42,10 +55,16 @@ public class DonationServiceTests {
         campaigns.addCampaign("Dogs");
 
         DonationService service = new DonationService(repo, donors, campaigns);
-        boolean result = service.makeDonation("Greg", "Dogs", 400);
+        boolean result = service.makeDonation("Greg",
+                "Dogs",
+                400);
 
-        assertEquals(false, result, "Donation rejected for exceeding limit");
-        assertEquals(0, repo.getHistory().size(), "No donation recorded");
+        assertEquals(false,
+                result,
+                "Donation rejected for exceeding limit");
+        assertEquals(0,
+                repo.getHistory().size(),
+                "No donation recorded");
     }
 
     static class InMemoryDonationRepo implements DonationRepositoryInterface {
@@ -57,7 +76,7 @@ public class DonationServiceTests {
         }
 
         @Override
-        public void saveDonation(Donation donation) {
+        public void saveDonation(final Donation donation) {
             history.add(donation);
         }
 

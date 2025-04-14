@@ -8,7 +8,10 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class DonorServiceTests {
+public final class DonorServiceTests {
+    private DonorServiceTests() {
+        //private constructor
+    }
 
     public static void runAll() {
         System.out.println("DonorServiceTests:");
@@ -24,15 +27,21 @@ public class DonorServiceTests {
         DonorService service = createTestService();
         service.addDonor("Greg", 500);
         Donor d = service.get("Greg");
-        assertEquals("Greg", d.getName(), "Donor created and retrieved");
-        assertEquals(500, d.getMonthlyLimit(), "Donor limit set");
+        assertEquals("Greg",
+                d.getName(),
+                "Donor created and retrieved");
+        assertEquals(500,
+                d.getMonthlyLimit(),
+                "Donor limit set");
     }
 
     public static void testDeleteDonor() {
         DonorService service = createTestService();
         service.addDonor("Ana", 1000);
         service.deleteDonor("Ana");
-        assertEquals(null, service.get("Ana"), "Donor deleted");
+        assertEquals(null,
+                service.get("Ana"),
+                "Donor deleted");
     }
 
 
@@ -44,16 +53,18 @@ public class DonorServiceTests {
             return new ArrayList<>(store.values());
         }
 
-        public void saveAllDonors(List<Donor> donors) {
+        public void saveAllDonors(final List<Donor> donors) {
             store.clear();
-            for (Donor d : donors) store.put(d.getName(), d);
+            for (Donor d : donors) {
+                store.put(d.getName(), d);
+            }
         }
 
         public void deleteAllDonors() {
             store.clear();
         }
 
-        public void deleteDonor(String name) {
+        public void deleteDonor(final String name) {
             store.remove(name);
         }
     }

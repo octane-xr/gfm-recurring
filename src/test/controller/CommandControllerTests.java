@@ -15,7 +15,7 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class CommandControllerTests {
+public final class CommandControllerTests {
 
     private CommandControllerTests() {
         //private builder
@@ -112,8 +112,6 @@ public class CommandControllerTests {
                 donationRepo.history.size(),
                 "No donation should be recorded");
     }
-
-    // --- Repositorios en memoria ---
 
     static class InMemoryDonorRepo implements DonorRepositoryInterface {
         Map<String, Donor> store = new HashMap<>();

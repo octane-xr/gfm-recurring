@@ -7,7 +7,10 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class DonorRepositoryTests {
+public final class DonorRepositoryTests {
+    private DonorRepositoryTests() {
+        //private constructor
+    }
 
     public static void runAll() {
         System.out.println("DonorRepositoryTests:");
@@ -18,16 +21,26 @@ public class DonorRepositoryTests {
 
     public static void testSaveAndLoadAllDonors() {
         InMemoryDonorRepo repo = new InMemoryDonorRepo();
-        repo.saveAllDonors(List.of(new Donor("Greg", 1000), new Donor("Ana", 500)));
+        repo.saveAllDonors(List.of(new Donor("Greg",
+                        1000),
+                new Donor("Ana",
+                        500)));
         List<Donor> loaded = repo.loadAllDonors();
-        assertEquals(2, loaded.size(), "Saved and loaded 2 donors");
+        assertEquals(2,
+                loaded.size(),
+                "Saved and loaded 2 donors");
     }
 
     public static void testDeleteDonor() {
         InMemoryDonorRepo repo = new InMemoryDonorRepo();
-        repo.saveAllDonors(List.of(new Donor("Greg", 1000), new Donor("Ana", 500)));
+        repo.saveAllDonors(List.of(new Donor("Greg",
+                        1000),
+                new Donor("Ana",
+                        500)));
         repo.deleteDonor("Greg");
-        assertEquals(1, repo.loadAllDonors().size(), "Deleted one donor");
+        assertEquals(1,
+                repo.loadAllDonors().size(),
+                "Deleted one donor");
     }
 
     public static void testDeleteAllDonors() {
@@ -44,16 +57,18 @@ public class DonorRepositoryTests {
             return new ArrayList<>(store.values());
         }
 
-        public void saveAllDonors(List<Donor> donors) {
+        public void saveAllDonors(final List<Donor> donors) {
             store.clear();
-            for (Donor d : donors) store.put(d.getName(), d);
+            for (Donor d : donors) {
+                store.put(d.getName(), d);
+            }
         }
 
         public void deleteAllDonors() {
             store.clear();
         }
 
-        public void deleteDonor(String name) {
+        public void deleteDonor(final String name) {
             store.remove(name);
         }
     }

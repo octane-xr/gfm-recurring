@@ -8,7 +8,10 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class CampaignServiceTests {
+public final class CampaignServiceTests {
+    private CampaignServiceTests() {
+        //private constructor
+    }
 
     public static void runAll() {
         System.out.println("CampaignServiceTests:");
@@ -44,7 +47,7 @@ public class CampaignServiceTests {
         }
 
         @Override
-        public void saveAllCampaigns(List<Campaign> campaigns) {
+        public void saveAllCampaigns(final List<Campaign> campaigns) {
             store.clear();
             for (Campaign c : campaigns) {
                 store.put(c.getName(), c);
@@ -52,7 +55,7 @@ public class CampaignServiceTests {
         }
 
         @Override
-        public void deleteCampaign(String campaignName) {
+        public void deleteCampaign(final String campaignName) {
             store.remove(campaignName);
         }
 

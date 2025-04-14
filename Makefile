@@ -1,21 +1,28 @@
-TARGET = gfm-recurring
+# Variables
+SRC_DIR=src
+BIN_DIR=bin
+TEST_DIR=$(SRC_DIR)/test
+MAIN_CLASS=main.Application
+CLASSPATH=$(BIN_DIR)
 
-SRC_DIR = src
-BIN_DIR = bin
+SOURCES=$(shell find $(SRC_DIR) -name "*.java")
+TEST_CLASSES=$(shell find $(TEST_DIR) -name "*Tests.java")
 
-SOURCES := $(shell find $(SRC_DIR) -name "*.java")
-JAVAC = javac
+all: compile
 
-MAIN_CLASS = main.Application
+compile:
+	mkdir -p $(BIN_DIR)
+	javac -d $(BIN_DIR) $(SOURCES)
 
-.PHONY: all run clean
+run:
+	java -cp $(CLASSPATH) $(MAIN_CLASS)
 
-all:
-	@mkdir -p $(BIN_DIR)
-	$(JAVAC) -d $(BIN_DIR) $(SOURCES)
+run-input:
+	java -cp $(CLASSPATH) $(MAIN_CLASS) input.txt
 
-run: all
-	java -cp $(BIN_DIR) $(MAIN_CLASS) input.txt
+test:
+	javac -d $(BIN_DIR) $(SOURCES)
+	java -cp $(CLASSPATH) test.TestRunner
 
 clean:
 	rm -rf $(BIN_DIR)

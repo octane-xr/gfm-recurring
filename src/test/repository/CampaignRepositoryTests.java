@@ -7,7 +7,10 @@ import java.util.*;
 
 import static test.TestRunner.assertEquals;
 
-public class CampaignRepositoryTests {
+public final class CampaignRepositoryTests {
+    private CampaignRepositoryTests() {
+        //private constructor
+    }
 
     public static void runAll() {
         System.out.println("CampaignRepositoryTests:");
@@ -34,7 +37,9 @@ public class CampaignRepositoryTests {
         InMemoryCampaignRepo repo = new InMemoryCampaignRepo();
         repo.saveAllCampaigns(List.of(new Campaign("X"), new Campaign("Y")));
         repo.deleteAllCampaigns();
-        assertEquals(0, repo.loadAllCampaigns().size(), "Deleted all campaigns");
+        assertEquals(0,
+                repo.loadAllCampaigns().size(),
+                "Deleted all campaigns");
     }
 
     static class InMemoryCampaignRepo implements CampaignRepositoryInterface {
@@ -44,12 +49,14 @@ public class CampaignRepositoryTests {
             return new ArrayList<>(store.values());
         }
 
-        public void saveAllCampaigns(List<Campaign> campaigns) {
+        public void saveAllCampaigns(final List<Campaign> campaigns) {
             store.clear();
-            for (Campaign c : campaigns) store.put(c.getName(), c);
+            for (Campaign c : campaigns) {
+                store.put(c.getName(), c);
+            }
         }
 
-        public void deleteCampaign(String name) {
+        public void deleteCampaign(final String name) {
             store.remove(name);
         }
 
