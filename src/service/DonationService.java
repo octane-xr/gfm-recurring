@@ -1,9 +1,9 @@
-package src.service;
+package service;
 
-import src.interfaces.DonationRepositoryInterface;
-import src.model.Donation;
-import src.model.Donor;
-import src.model.Campaign;
+import interfaces.DonationRepositoryInterface;
+import model.Donation;
+import model.Donor;
+import model.Campaign;
 
 import java.util.*;
 
@@ -16,13 +16,17 @@ public class DonationService {
         this.donationRepo = donationRepo;
         this.donorService = donorService;
         this.campaignService = campaignService;
+
     }
+
+    public List<Donation> getDonations() {return donationRepo.loadAllDonations();}
 
     public boolean makeDonation(String donorName, String campaignName, int amount) {
         Donor donor = donorService.get(donorName);
         Campaign campaign = campaignService.get(campaignName);
 
-        if(donor==null || campaign==null || !donor.canDonate(amount)) {
+        if(!donor.canDonate(amount)) {
+            System.out.println("The ammount desired to donate surpassed the monthly limit. Total donated: $" + donor.getTotal_donated() + ". Limit: $" + donor.getMonthly_limit());
             return false;
         }
 

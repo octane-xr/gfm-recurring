@@ -1,7 +1,7 @@
-package src.service;
+package service;
 
-import src.interfaces.DonorRepositoryInterface;
-import src.model.Donor;
+import interfaces.DonorRepositoryInterface;
+import model.Donor;
 
 import java.util.*;
 
@@ -12,7 +12,8 @@ public class DonorService {
     public DonorService(DonorRepositoryInterface donorRepo) {
         this.donorRepo = donorRepo;
         this.donors = new HashMap<>();
-        for(Donor d : donorRepo.loadAllDonors()) {
+
+        for(Donor d: donorRepo.loadAllDonors()){
             donors.put(d.getName(),d);
         }
     }
@@ -28,12 +29,18 @@ public class DonorService {
         return donors.get(name);
     }
 
-
     public Collection<Donor> getAllDonors(){
         return donors.values();
     }
 
     public void saveAllDonors() {
         donorRepo.saveAllDonors(new ArrayList<>(donors.values()));
+    }
+
+
+
+    public void deleteDonor(String donorName) {
+        donors.remove(donorName);
+        donorRepo.deleteDonor(donorName);
     }
 }

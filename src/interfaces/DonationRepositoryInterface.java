@@ -1,6 +1,6 @@
-package src.interfaces;
+package interfaces;
 
-import src.model.Donation;
+import model.Donation;
 import java.util.List;
 
 public interface DonationRepositoryInterface {

@@ -1,7 +1,7 @@
-package src.repository;
+package repository;
 
-import src.model.Donation;
-import src.interfaces.DonationRepositoryInterface;
+import model.Donation;
+import interfaces.DonationRepositoryInterface;
 
 import java.util.*;
 import java.io.*;
@@ -37,11 +37,10 @@ public class DonationRepository implements DonationRepositoryInterface {
                 donations.add(d);
             }
 
-
         }catch (IOException e) {
             System.err.println("No donations file found, creating new one...");
         }
-        return List.of();
+        return donations;
     }
 
     @Override

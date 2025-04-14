@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 public class Donation {
     private final String donor_name;
@@ -22,4 +22,5 @@ public class Donation {
     public int getAmount_donated() {
         return amount_donated;
     }
+
 }

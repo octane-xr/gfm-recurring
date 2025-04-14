@@ -1,10 +1,10 @@
-package src.main;
+package main;
 
-import src.controller.CommandController;
-import src.repository.*;
-import src.interfaces.*;
-import src.service.*;
-import src.view.ConsoleView;
+import controller.CommandController;
+import repository.*;
+import interfaces.*;
+import service.*;
+import view.ConsoleView;
 
 
 public class Application {

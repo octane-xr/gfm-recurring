@@ -1,7 +1,7 @@
-package src.repository;
+package repository;
 
-import src.model.Campaign;
-import src.interfaces.CampaignRepositoryInterface;
+import model.Campaign;
+import interfaces.CampaignRepositoryInterface;
 
 import java.io.*;
 import java.util.*;
@@ -54,5 +54,12 @@ public class CampaignRepository implements CampaignRepositoryInterface {
             throw new RuntimeException("Failed to save campaigns. Error: " + e.getMessage());
         }
 
+    }
+
+    @Override
+    public void deleteCampaign(String campaignName) {
+        List<Campaign> campaigns = loadAllCampaigns();
+        campaigns.removeIf(c -> c.getName().equalsIgnoreCase(campaignName));
+        saveAllCampaigns(campaigns);
     }
 }

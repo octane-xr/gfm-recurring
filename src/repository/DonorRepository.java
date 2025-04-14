@@ -1,7 +1,7 @@
-package src.repository;
+package repository;
 
-import src.interfaces.DonorRepositoryInterface;
-import src.model.Donor;
+import interfaces.DonorRepositoryInterface;
+import model.Donor;
 
 import java.io.*;
 import java.util.*;
@@ -57,5 +57,13 @@ public class DonorRepository implements DonorRepositoryInterface {
             throw new RuntimeException("Failed to save donors. Error: " + e.getMessage());
         }
 
+    }
+
+
+    @Override
+    public void deleteDonor(String donorName) {
+        List<Donor> donors = loadAllDonors();
+        donors.removeIf(d -> d.getName().equalsIgnoreCase(donorName));
+        saveAllDonors(donors);
     }
 }

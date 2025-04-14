@@ -1,7 +1,7 @@
-package src.service;
+package service;
 
-import src.interfaces.CampaignRepositoryInterface;
-import src.model.Campaign;
+import interfaces.CampaignRepositoryInterface;
+import model.Campaign;
 
 import java.util.*;
 
@@ -32,5 +32,10 @@ public class CampaignService {
 
     public void saveAllCampaigns(){
         campaignRepo.saveAllCampaigns(new ArrayList<>(campaigns.values()));
+    }
+
+    public void deleteCampaign(String name){
+        campaigns.remove(name);
+        campaignRepo.deleteCampaign(name);
     }
 }

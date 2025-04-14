@@ -1,8 +1,9 @@
-package src.view;
+package view;
 
-import src.controller.CommandController;
-import src.model.Donor;
-import src.model.Campaign;
+import controller.CommandController;
+import model.Donation;
+import model.Donor;
+import model.Campaign;
 
 import java.io.*;
 import java.util.*;
@@ -14,9 +15,12 @@ public class ConsoleView {
         this.commandController = commandController;
     }
 
-    private void printSummary(){
+    public void printSummary(){
         List<Donor> donors = new ArrayList<>(commandController.getDonorService().getAllDonors());
         List<Campaign> campaigns = new ArrayList<>(commandController.getCampaignService().getAllCampaigns());
+
+        donors.sort(Comparator.comparing(Donor::getName));
+        campaigns.sort(Comparator.comparing(Campaign::getName));
 
         System.out.println("Donors: ");
         for(Donor d : donors){
@@ -29,37 +33,50 @@ public class ConsoleView {
 
     }
 
+    public void printDonations() {
+        List<Donation> donations = new ArrayList<>(commandController.getDonationService().getDonations());
+        donations.sort(Comparator.comparing(Donation::getDonor_name));
+        System.out.println("Donations:");
+        for (Donation d : donations) {
+            System.out.println(d.getDonor_name() + " donated $" + d.getAmount_donated() + " to "  + d.getCampaign_name());
+        }
+    }
+
+
+
     public void run(String[] args){
         Scanner sc = null;
 
-        try{
-            if(args.length == 1){
+        if(args.length == 1){
+            try {
                 sc = new Scanner(new File(args[0]));
-            }else{
-                if(System.in.available() == 0){
-                    System.err.println("No imput file provided.");
-                    return;
+                while(sc.hasNextLine()){
+                    String line = sc.nextLine().trim();
+                    if (line.isEmpty()) continue;
+                    System.out.println(line);
+                    commandController.processCommands(line);
                 }
-                sc = new Scanner(System.in);
-            }
 
-            while(sc.hasNextLine()) {
-                String line = sc.nextLine().trim();
-                if (line.isEmpty()) continue;
-                System.out.println(line);
-                commandController.processCommands(line);
+            } catch(FileNotFoundException e){
+                System.err.println("File: " + args[0] + " not found." );
+            } catch(Exception e){
+                System.err.println(e);
+            } finally{
+                if(sc != null) sc.close();
+                printSummary();
             }
-        } catch(FileNotFoundException e){
-            System.err.println("File: " + args[0] + " not found." );
-        } catch(Exception e){
-            System.err.println(e);
-        } finally{
-            if(sc != null) sc.close();
         }
-        System.out.println("\n");
-        printSummary();
-        commandController.persist();
 
+
+        System.out.println();
+
+
+        sc = new Scanner(System.in);
+        while(true){
+            System.out.print("> ");
+            String input = sc.nextLine().trim();
+            commandController.processCommands(input);
+        }
 
     }
 
