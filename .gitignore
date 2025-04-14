@@ -4,6 +4,7 @@
 
 # Build output
 out/
+bin/
 
 # Project-specific data
 data/

@@ -88,12 +88,18 @@ public class CommandController {
                     consoleView.printDonations();
                     break;
 
+                case "Help":
+                    consoleView.printAllCommands();
+                    break;
+
                 case "Exit":
                     persist();
                     System.exit(0);
+                    break;
 
                 default:
-                    System.err.println(parts[0] + ": command not found");
+                    System.err.println(parts[0]
+                            + ": command not found. Run 'Help' to list available commands");
             }
         } catch (Exception e) {
             System.err.println("Error processing line: " + line);

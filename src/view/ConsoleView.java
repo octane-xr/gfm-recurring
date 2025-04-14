@@ -76,6 +76,19 @@ public final class ConsoleView {
         }
     }
 
+    public void printAllCommands(){
+        System.out.println("Available commands:");
+        System.out.println("  Add Donor [name] $[monthlyLimit]");
+        System.out.println("  Add Campaign [name]");
+        System.out.println("  Donate [donorName] [campaignName] $[amount]");
+        System.out.println("  Delete Donor [name]");
+        System.out.println("  Delete Campaign [name]");
+        System.out.println("  Print_summary");
+        System.out.println("  Print_donations");
+        System.out.println("  Help");
+        System.out.println("  Exit\n");
+    }
+
     /**
      * Runs the main command loop for the console view.
      * If a file is provided as an argument,
@@ -87,35 +100,37 @@ public final class ConsoleView {
     public void run(final String[] args) {
         Scanner sc = null;
 
-        if (args.length == 1) {
-            try {
+        try {
+            if (args.length == 1) {
                 sc = new Scanner(new File(args[0]));
+            } else if (System.in.available() > 0) {
+                sc = new Scanner(System.in);
+            }
+
+            if (sc != null) {
                 while (sc.hasNextLine()) {
                     String line = sc.nextLine().trim();
-                    if (line.isEmpty()) {
-                        continue;
-                    }
+                    if (line.isEmpty()) continue;
                     System.out.println(line);
                     commandController.processCommands(line);
                 }
-
-            } catch (FileNotFoundException e) {
-                System.err.println("File: " + args[0] + " not found.");
-            } catch (Exception e) {
-                System.err.println(e);
-            } finally {
-                if (sc != null) {
-                    sc.close();
-                }
                 printSummary();
             }
+        } catch (FileNotFoundException e) {
+            System.err.println("File: " + args[0] + " not found.");
+        } catch (Exception e) {
+            System.err.println(e);
         }
+
         System.out.println();
         sc = new Scanner(System.in);
         while (true) {
             System.out.print("> ");
+            if (!sc.hasNextLine()) break;
             String input = sc.nextLine().trim();
+            if (input.isEmpty()) continue;
             commandController.processCommands(input);
         }
     }
+
 }
